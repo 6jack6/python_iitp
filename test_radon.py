@@ -5,6 +5,9 @@ from matplotlib import pyplot as plt
 from skimage.color import rgb2gray
 import adrt
 import pytest
+import os
+
+os.makedirs('results', exist_ok=True)
 
 def check_containing(img1, img2):
     if img1.shape[0] >= img2.shape[0] and img1.shape[1] >= img2.shape[1]:
@@ -172,6 +175,13 @@ class Test_Lines:
         
         res_i, res_adrt = create_r_pair(image)
         
+        image_save_path = os.path.join('results', 'test_img_t1.png')
+        cv2.imwrite(image_save_path, image)
+        image_save_path = os.path.join('results', 'res_adrt_t1.png')
+        cv2.imwrite(image_save_path, res_adrt)
+        image_save_path = os.path.join('results', 'res_i_t1.png')
+        cv2.imwrite(image_save_path, res_i)
+        
         assert check_containing(res_adrt, res_i) == True
         
     def test_clear_img(self):
@@ -179,6 +189,13 @@ class Test_Lines:
         image = np.zeros((128, 128))
         
         res_i, res_adrt = create_r_pair(image)
+        
+        image_save_path = os.path.join('results', 'test_img_t2.png')
+        cv2.imwrite(image_save_path, image)
+        image_save_path = os.path.join('results', 'res_adrt_t2.png')
+        cv2.imwrite(image_save_path, res_adrt)
+        image_save_path = os.path.join('results', 'res_i_t2.png')
+        cv2.imwrite(image_save_path, res_i)
         
         assert check_containing(res_adrt, res_i) == True
     
@@ -200,6 +217,13 @@ class Test_Lines:
         cv2.line(image, pt1=coord[4], pt2=coord[5], color=(255, 255, 255), thickness=wight)
         
         res_i, res_adrt = create_r_pair(image)
+        
+        image_save_path = os.path.join('results', 'test_img_t3.png')
+        cv2.imwrite(image_save_path, image)
+        image_save_path = os.path.join('results', 'res_adrt_t3.png')
+        cv2.imwrite(image_save_path, res_adrt)
+        image_save_path = os.path.join('results', 'res_i_t3.png')
+        cv2.imwrite(image_save_path, res_i)
         
         assert check_containing(res_adrt, res_i) == True
     
@@ -223,6 +247,11 @@ class Test_Lines:
         
         res_i, res_adrt = create_r_pair(image)
         
-        assert check_containing(res_adrt, res_i) == True
-              
+        image_save_path = os.path.join('results', 'test_img_t4.png')
+        cv2.imwrite(image_save_path, image)
+        image_save_path = os.path.join('results', 'res_adrt_t4.png')
+        cv2.imwrite(image_save_path, res_adrt)
+        image_save_path = os.path.join('results', 'res_i_t4.png')
+        cv2.imwrite(image_save_path, res_i)
         
+        assert check_containing(res_adrt, res_i) == True
