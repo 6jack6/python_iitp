@@ -1,15 +1,16 @@
+from typing import Any
+
 import cv2
 from matplotlib import pyplot as plt
 import numpy as np
 from skimage.color import rgb2gray
 
 
-def radon_transform(input_image, output_shape=None):
+def radon_transform(input_image: np.ndarray, output_shape: Any = None) -> np.ndarray:
     """Discrete Radon Transform for lines.
 
     Args:
         input_image: Image to be transformed.
-
         output_shape: Shape of the output image (None).
 
     Returns:

@@ -8,6 +8,7 @@ nox.options.sessions = "lint", "tests", "mypy"
 
 
 def install_with_constraints(session, *args, **kwargs):
+    """Installs packages with constraints"""
     with tempfile.NamedTemporaryFile() as requirements:
         session.run(
             "poetry",
@@ -17,11 +18,12 @@ def install_with_constraints(session, *args, **kwargs):
             f"--output={requirements.name}",
             external=True,
         )
-        session.install(f"--log={requirements.name}", *args, **kwargs)
+        session.install("-r", f"{requirements.name}", *args, **kwargs)
 
 
 @nox.session(python=["3.10"])
 def tests(session):
+    """Run tests."""
     args = session.posargs or ["--cov", "-m", "not e2e"]
     session.run("poetry", "install", external=True)
     session.run("pytest", *args)
@@ -29,6 +31,7 @@ def tests(session):
 
 @nox.session(python=["3.10"])
 def lint(session):
+    """Run a linter."""
     args = session.posargs or locations
     install_with_constraints(
         session,
@@ -44,6 +47,7 @@ def lint(session):
 
 @nox.session(python="3.10")
 def black(session):
+    """Run black to fix code style issues."""
     args = session.posargs or locations
     install_with_constraints(session, "black")
     session.run("black", *args)
@@ -51,6 +55,7 @@ def black(session):
 
 @nox.session(python="3.10")
 def safety(session):
+    """Run safety check."""
     with tempfile.NamedTemporaryFile() as requirements:
         session.run(
             "poetry",
@@ -67,6 +72,7 @@ def safety(session):
 
 @nox.session(python="3.10")
 def mypy(session):
+    """Run the static type checker mypy."""
     args = session.posargs or locations
     install_with_constraints(session, "mypy")
     session.run("mypy", *args)
@@ -74,23 +80,15 @@ def mypy(session):
 
 @nox.session(python="3.7")
 def pytype(session):
-    """Run the static type checker."""
+    """Run the static type checker pytype."""
     args = session.posargs or ["--disable=import-error", *locations]
     install_with_constraints(session, "pytype")
     session.run("pytype", *args)
 
 
-# @nox.session(python=["3.10", "3.7"])
-# def xdoctest(session: Session) -> None:
-#     """Run examples with xdoctest."""
-#     args = session.posargs or ["all"]
-#     session.run("poetry", "install", "--no-dev", external=True)
-#     install_with_constraints(session, "xdoctest")
-#     session.run("python", "-m", "xdoctest", package, *args)
-
-
-@nox.session(python="3.8")
+@nox.session(python="3.10")
 def docs(session: Session) -> None:
     """Build the documentation."""
-    install_with_constraints(session, "sphinx")
+    session.run("poetry", "install", "--no-dev", external=True)
+    install_with_constraints(session, "sphinx", "sphinx-autodoc-typehints")
     session.run("sphinx-build", "docs", "docs/_build")

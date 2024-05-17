@@ -15,6 +15,9 @@ python = ["^3.10"]
 matplotlib = "^3.9.0"
 numpy = "^1.26.4"
 flake8 = "^7.0.0"
+sphinx-autodoc-typehints = "^2.1.0"
+opencv-python = "^4.9.0.80"
+scikit-image = "^0.23.2"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"
 
@@ -26,6 +29,7 @@ mypy = "^1.10.0"
 pytype = {version = "^2024.4.11", python = "3.7"}
 xdoctest = "^1.1.3"
 sphinx = "^7.3.7"
+sphinx-autodoc-typehints = "^2.1.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
