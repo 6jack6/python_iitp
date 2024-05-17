@@ -1,15 +1,25 @@
-import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+import numpy as np
 from skimage.color import rgb2gray
 
 
 def radon_transform(input_image, output_shape=None):
-    """
-    Discrete Radon Transform for lines
-    :param input_image: image to be transformed
-    :param output_shape: shape of the output image
-    :return: result: transformed image
+    """Discrete Radon Transform for lines.
+
+    Args:
+        input_image: Image to be transformed.
+
+        output_shape: Shape of the output image (None).
+
+    Returns:
+        Transformed image.
+
+    Example:
+        >>> from PIL import Image
+        >>> img = Image.open('path/to/image.jpg')
+        >>> transformed_image = radon_transform(image)
+        True
     """
     if input_image.ndim == 3:
         input_image = rgb2gray(input_image)
@@ -17,8 +27,10 @@ def radon_transform(input_image, output_shape=None):
     if output_shape is None:
         output_shape = input_image.shape
 
-    eps = 1.e-8
-    k_values = np.tan(np.linspace(-np.pi / 2 + eps, np.pi / 2 - eps, num=output_shape[0]))
+    eps = 1.0e-8
+    k_values = np.tan(
+        np.linspace(-np.pi / 2 + eps, np.pi / 2 - eps, num=output_shape[0])
+    )
     b_values = np.linspace(-input_image.shape[1], input_image.shape[1], output_shape[1])
 
     result = np.zeros(output_shape)
@@ -39,7 +51,7 @@ plt.imshow(image)
 plt.show()
 
 transformed_image = radon_transform(image)
-cv2.imwrite('tranformed_img.jpg', transformed_image)
+cv2.imwrite("tranformed_img.jpg", transformed_image)
 
 plt.title("Image")
 plt.imshow(transformed_image)
